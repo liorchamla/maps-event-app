@@ -17,4 +17,4 @@ let map, // La Google Map
 	}; 
 
 // On doit disposer de l'URL du serveur pour ouvrir une socket avec Socket.IO
-const backendSocketURL = "https://exia-a3-mongo-liorchamla.c9users.io/";
+const backendSocketURL = "http://localhost:3000";
