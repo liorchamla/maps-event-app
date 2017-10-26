@@ -6,11 +6,13 @@
     "extends": "eslint:recommended",
     "globals": {
         "window": true,
-        "map": true
+        "map": true,
+        "console": true
     },
     "rules": {
-        "no-unused-vars": ["error", { "vars": "local", "args": "after-used", "ignoreRestSiblings": false }],
+        "no-unused-vars": ["off"],
         "no-undef": ["off"],
+        "no-console": ["off"],
         "indent": [
             "error",
             "tab"

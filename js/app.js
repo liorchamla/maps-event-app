@@ -1,19 +1,3 @@
-let map, // La Google Map
-	globalSearchBox, // La searchbox globale
-	modalSearchBox, // La searchbox modale
-	labels = {
-		"blesse": "Personne blessée !",
-		"mort": "Personne décédée !",
-		"bouchon": "Embouteillage en cours !",
-		"travaux": "Travaux en cours !",   
-	},
-	icons = {
-		"blesse": "img/icons/gmap/blesse.png",
-		"mort": "img/icons/gmap/mort.png",
-		"bouchon": "img/icons/gmap/bouchon.png",
-		"travaux": "img/icons/gmap/travaux.png",
-	}; 
-
 // Permet de charger toutes les notifications à partir du Backend
 function loadNotificationsFromBackend(){
 	Notification.loadAll().then(notifications => {
@@ -46,10 +30,15 @@ window.addEventListener("load", loadNotificationsFromBackend);
 // On gère la taille de la div#map 
 $("#map").outerHeight($(window).outerHeight() - $("nav").outerHeight() - $("#search").parent().outerHeight());
 
-const socket = io("https://exia-a3-mongo-liorchamla.c9users.io/");
+// On se connecte au serveur qui emmet des notifications (serveur temporaire sur c9)
+const socket = io(backendSocketURL);
 
+// On attend les messages de type "event-notification" et on y régit
 socket.on("event-notification", data => {
+	// On construit un objet notification à partir des données reçues
 	const notification = new Notification(data.id, data.type, data.description, data.position, data.confirmations, data.infirmations);
+	// On affiche un toast qui nous explique qu'une nouvelle notification a été reçue
 	Materialize.toast("<img src=\""+icons[notification.type]+"\"> Nouvelle notification : "+labels[notification.type], 2000, "rounded");
+	// On créé le marker qui correspond
 	GoogleUtilities.createMarker(notification);
 });
