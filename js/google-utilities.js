@@ -91,7 +91,7 @@ export class GoogleUtilities {
 		overWindows.push(overWindow);
         
 		// Ajout d'un écouteur lors de l'ouverture de la window (plus tard)
-		google.maps.event.addListener(infoWindow, "domready", function() {
+		infoWindow.addListener("domready", function() {
 			// Ajout d'écouteurs sur les boutons
 			const id = "#infowindow-" + notification.id;
 			document.querySelector(`${id} #btn-confirm`).addEventListener("click", function(e) {
