@@ -1,3 +1,7 @@
+/**
+ * Gestion du formulaire dans la modal
+ * @param {DOMEvent} event 
+ */
 function onSubmitForm(event){
 	// On stop le comportement par défaut
 	event.preventDefault();
@@ -25,6 +29,9 @@ function onSubmitForm(event){
 	$("#event-form form")[0].reset();
 }
 
+/**
+ * Gestion du choix dans la Google Searchbox globale
+ */
 function onChooseGlobalSearchBox(){
 	const coords = this.getPlaces().shift().geometry.location;
 	const position = {lat: coords.lat(), lng: coords.lng()};
@@ -32,6 +39,9 @@ function onChooseGlobalSearchBox(){
 	map.setCenter(position);
 }
 
+/**
+ * Gestion du choix dans la Google searchbox de la modal
+ */
 function onChooseModalSearchBox(){
 	const coords = this.getPlaces().shift().geometry.location;
 	const position = {lat: coords.lat(), lng: coords.lng()};
@@ -39,6 +49,10 @@ function onChooseModalSearchBox(){
 	$("#coords-modal").val(JSON.stringify(position));
 }
 
+/**
+ * Gestion du click sur la map
+ * @param {DOMEvent} event 
+ */
 function onClickMap(event){
 	const position = {lat: event.latLng.lat(), lng: event.latLng.lng()};
 	// On place les données dans l'input hidden
@@ -49,12 +63,19 @@ function onClickMap(event){
 	$("#event-form").modal("open");
 }
 
+/**
+ * Gestion du click sur le bouton + en bas de page
+ */
 function onClickPlusButton(){
 	$("#search-block").show();
 	$("#search-in-form").val("");
 	$("#event-form").modal("open");
 }
 
+/**
+ * Gestion du click sur les checkbox de filtres
+ * @param {DOMEvent} event 
+ */
 function onClickFiltersCheck(event){
 	const type = event.target.id;
 	const checked = event.target.checked;
