@@ -12,7 +12,7 @@ const visibleMarkers = [
 /**
  * La classe qui nous donne plein d'utilitaire (création de map, de markers, d'infowindows etc)
  */
-class GoogleUtilities {
+export class GoogleUtilities {
 
 	// Permet de créer la map (sera appelée par le callback du script Google Map)
 	static createMap(){

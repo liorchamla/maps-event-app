@@ -1,3 +1,6 @@
+import { Notification } from "./notification.model";
+import { GoogleUtilities } from "./google-utilities";
+
 /**
  * Permet de charger les notifications à partir du Backend
  */
