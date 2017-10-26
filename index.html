@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Maps Event Montpellier</title>
+    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="css/materialize.min.css">    
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">    
+</head>
+<body>
+    <nav>
+        <div class="nav-wrapper">
+            <a href="#" class="brand-logo"><img src="img/logo-map.png" alt="Logo"> Maps Events Montpellier</a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="pages/register.html"><i class="material-icons">account_circle</i></a></li>
+                <li><a href="#"><i class="material-icons">lock_outline</i></a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="relative">
+        <i class="material-icons custom-prefix">location_on</i>
+        <input type="text" class="icon-left" id="search" placeholder="Recherchez un emplacement">
+    </div>
+    <div class="relative">
+        <div id="map"></div>
+        <a id="btn-add" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">add</i></a>
+        <div class="filters">
+            <input type="checkbox" class="filled-in" id="blesse" checked="checked" />
+            <label for="blesse">Blessés</label>
+            <input type="checkbox" id="mort" class="filled-in" checked="checked">
+            <label for="mort">Morts</label>
+            <input type="checkbox" id="bouchon" class="filled-in" checked="checked">
+            <label for="bouchon">Embouteillages</label>
+            <input type="checkbox" id="travaux" class="filled-in" checked="checked">    
+            <label for="travaux">Travaux</label>
+        </div>        
+    </div>
+
+    <!-- Modal Trigger -->
+  <!-- <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Modal</a> -->
+  
+    <!-- Modal Structure -->
+    <div id="event-form" class="modal  modal-fixed-footer">
+        <form>
+            <div class="modal-content">
+                <input type="hidden" id="coords-modal" />
+                <h4>Ajouter un événement</h4>
+                <div class="row" id="search-block">
+                    <div class="input-field s12 relative">
+                        <i class="material-icons custom-prefix">location_on</i>
+                        <input type="text" name="search-in-form" class="icon-left" id="search-in-form" placeholder="Entrez une adresse !">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12 m6">
+                        <select class="icons validate" id="type" name="type">
+                            <option value="" disabled selected>Type d'événément</option>
+                            <option value="blesse" data-icon="img/icons/blesse.png" class="left circle">Personne blessée !</option>
+                            <option value="mort" data-icon="img/icons/mort.png" class="left circle">Personne décédée !</option>
+                            <option value="travaux" data-icon="img/icons/travaux.png" class="left circle">Travaux en cours !</option>
+                            <option value="bouchon" data-icon="img/icons/bouchon.png" class="left circle">Embouteillage en cours !</option>
+                        </select>
+                    </div>
+                    <div class="input-field col s12 m6">
+                        <textarea id="description" required class="materialize-textarea" name="description"></textarea>
+                        <label for="description">Description de l'événement</label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="waves-effect waves-green btn">
+                    <i class="material-icons left">add_box</i>
+                    Créer l'événement
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <template id="infoWindow">
+        <div class="main">
+            <h4 class="info-title"><img class="icon-description" src="" /><span></span></h4>
+            <p>
+                
+            </p>
+            <div class="clearfix"></div>
+            <div class="buttons right div-confirm" id="">
+                <button class="btn" id="btn-confirm"><span class="green darken-4 custom-badge"></span> Confirmer</button>
+                <button class="btn red" id="btn-infirm"><span class="red darken-4 custom-badge"></span> Infirmer</button>
+            </div>
+        </div>
+    </template>
+
+    <template id="overWindow">
+        <div class="main">
+            <h4 class="info-title"><img class="icon-description" src="" /><span></span></h4>
+            <p>
+                
+            </p>
+        </div>
+    </template>
+    
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCW_Yo2yVQ2p3dETySTef49A9FN2uBb3Rw&libraries=places"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/materialize.min.js"></script>
+    <script src="js/notification.model.js"></script>
+    <script src="js/google-utilities.js"></script>
+    <script src="js/handlers.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
