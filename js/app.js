@@ -1,6 +1,10 @@
-// Permet de charger toutes les notifications à partir du Backend
+/**
+ * Permet de charger les notifications à partir du Backend
+ */
 function loadNotificationsFromBackend(){
+	// On demande à la classe Notification de nous renvoyer les notifications du Serveur
 	Notification.loadAll().then(notifications => {
+		// Pour chaque notificatio, créons un marqueur
 		notifications.forEach(notification => {
 			GoogleUtilities.createMarker(notification);
 		});
@@ -10,19 +14,21 @@ function loadNotificationsFromBackend(){
 // On initialise la map
 GoogleUtilities.createMap();
 
+// MATERIALIZE SHIT :
 // On initialise les modals
 $(".modal").modal();
-
 // On initilise les selects
 $("select").material_select();
 
+// EVENTS LISTENERS
 // On initialise le click sur le bouton plus
-$("#btn-add").on("click", onClickPlusButton);
+document.querySelector("#btn-add").addEventListener("click", onClickPlusButton);
 
-$("[type=checkbox]").on("click", onClickFiltersCheck);
+// On initialise le click sur les checkboxes des filtres
+Array.from(document.querySelectorAll("[type=checkbox]")).forEach(input => input.addEventListener("click", onClickFiltersCheck));
 
 // On initialise le submit du formulaire 
-$("#event-form form").on("submit", onSubmitForm);
+document.querySelector("#event-form form").addEventListener("submit", onSubmitForm);
 
 // On charge les événements à partir du back end
 window.addEventListener("load", loadNotificationsFromBackend);
