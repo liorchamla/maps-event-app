@@ -37,7 +37,11 @@ class GoogleUtilities {
 		GoogleUtilities.initSearchBoxes();
 	}
 
-	// Permet de créer le contenu l'infoWindow qui sera ouverte au click sur le marker
+	/**
+	 * Permet de créer le contenu l'infoWindow qui sera ouverte au click sur le marker
+	 * 
+	 * @param {Notification} notification La notification pour laquelle on veut créer un contenu d'OverWindow 
+	 */
 	static getInfoWindowContent(notification){
 		const template = document.getElementById("infoWindow").content.cloneNode(true);
 
@@ -51,7 +55,11 @@ class GoogleUtilities {
 		return template.querySelector("div.main").innerHTML;
 	}
 
-	// Permet de créer le contenu l'infoWindow qui sera ouverte au mouseover
+	/**
+	 * Permet de créer le contenu l'infoWindow qui sera ouverte au mouseover
+	 * 
+	 * @param {Notification} notification la notification pour laquelle on veut un contenu d'OverWindow
+	 */
 	static getOverWindowContent(notification){
 		const template = document.getElementById("overWindow").content.cloneNode(true);
         
@@ -62,7 +70,12 @@ class GoogleUtilities {
 		return template.querySelector("div.main").innerHTML;
 	}
 
-	// Permet de créer une InfoWindow
+	/**
+	 * Permet de créer les InfoWindow et OverWindow
+	 * 
+	 * @param {Notification} notification La notification pour laquelle on veut créer une infoWindow
+	 * @param {google.maps.Marker} marker Le marker sur lequel on va greffer l'infoWindow
+	 */
 	static createInfoWindow(notification, marker){
 		// Création de l'infoWindow
 		const infoWindow = new google.maps.InfoWindow({
@@ -81,11 +94,11 @@ class GoogleUtilities {
 		google.maps.event.addListener(infoWindow, "domready", function() {
 			// Ajout d'écouteurs sur les boutons
 			const id = "#infowindow-" + notification.id;
-			$(`${id} #btn-confirm`).on("click", function(e) {
+			document.querySelector(`${id} #btn-confirm`).addEventListener("click", function(e) {
 				e.preventDefault();
 				notification.confirmations++;
 				notification.update().then(response => {
-					$(this).find("span").text(notification.confirmations);    
+					this.querySelector("span").textContent = notification.confirmations;    
 				}).catch(err => {
 					alert("Une erreur nous empêche de mettre à jour le statut.");
 					console.error(err);
@@ -93,11 +106,11 @@ class GoogleUtilities {
                 
 			});
     
-			$(`${id} #btn-infirm`).on("click", function(e){
+			document.querySelector(`${id} #btn-infirm`).addEventListener("click", function(e){
 				e.preventDefault();
 				notification.infirmations++;
 				notification.update().then(response => {
-					$(this).find("span").text(notification.infirmations);
+					this.querySelector("span").textContent = notification.infirmations;
 				}).catch(err => {
 					alert("Une erreur nous empêche de mettre à jour le statut.");
 					console.error(err);
@@ -107,25 +120,39 @@ class GoogleUtilities {
 
 		// On lie l'infoWindow avec le marker
 		marker.addListener("click", function(){
+			// On ferme toutes les infoWindow (y compris les overWindows)
 			infoWindows.concat(overWindows).forEach(info => info.close());
+			// On ouvre que celle qui nous intéresse
 			infoWindow.open(map, marker);
+			// On lui spécifie qu'elle est ouverte !
 			infoWindow.isOpen = true;
 		});
 
-		google.maps.event.addListener(infoWindow,"closeclick",function(){
+		// Quand on ferme l'infoWindow, on lui notifie qu'elle est fermée (...)
+		infoWindow.addListener("closeclick",function(){
 			infoWindow.isOpen = false;
 		});
 
+		// Quand on passe par dessus un marker, si l'infoWindow n'est pas ouverte
+		// alors on permet à l'overWindow de s'ouvrir
 		marker.addListener("mouseover", function(){
 			if(!infoWindow.isOpen){
 				overWindow.open(map, marker);
 			}
 		});
+		
+		// Quand la souris sort du marker , on ferme l'overWindow
 		marker.addListener("mouseout", function(){
 			overWindow.close();
 		});
 	}
 
+	/**
+	 * Permet de dire à un marqueur si on veut le voir ou pas
+	 * 
+	 * @param {string} type Le type de notification concernée
+	 * @param {boolean} visibility La visibilité qu'on veut lui donner
+	 */
 	static setMarkersVisibility(type, visibility){
 		// On s'occupe de maintenir un état des marqueurs qu'on doit voir ou pas
 		if(!visibility && visibleMarkers.includes(type)){
@@ -142,6 +169,11 @@ class GoogleUtilities {
 		});
 	}
 
+	/**
+	 * Permet de créer un marqueur pour une notification
+	 * 
+	 * @param {Notification} notification La notification pour laquelle on veut créer un marqueur
+	 */
 	static createMarker(notification){
 		// Icone pour le marqueur :
 		const icon = {
@@ -170,14 +202,23 @@ class GoogleUtilities {
 		GoogleUtilities.createInfoWindow(notification, marker);
 	}
 
-	// Permet d'initialiser un searchbox
+	/**
+	 * Permet d'initialiser un searchbox
+	 * 
+	 * @param {string} id L'id de l'élément input pour lequel on veut créer un searchBox
+	 */
 	static createSearchBox(id){
+		// On récupère l'input
 		const input = document.getElementById(id);
+		// On demande à Google de créer un searchbox
 		const searchBox = new google.maps.places.SearchBox(input);
+		// On renvoie le searchBox créé
 		return searchBox;
 	}
     
-	// Permet d'initiliser les 2 searchbox
+	/**
+	 * Permet d'initiliser les 2 searchbox
+	 */
 	static initSearchBoxes(){
 		// Création de l'input global
 		globalSearchBox = GoogleUtilities.createSearchBox("search");
